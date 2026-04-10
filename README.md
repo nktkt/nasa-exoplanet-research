@@ -102,6 +102,8 @@ After running the pipeline, the main deliverables are:
   Radius-valley estimates in metallicity bins.
 - `results/research_summary.json`
   Machine-readable summary of the full run.
+- `data/raw/intbsc_black_hole_candidates.psv`
+  Local HEASARC snapshot of black-hole candidates and related microquasar sources.
 
 ## Methodology
 
@@ -206,6 +208,50 @@ If you are on a headless or restricted machine, use:
 ```bash
 MPLCONFIGDIR=/tmp/mplconfig python3 src/nasa_exoplanet_research.py
 ```
+
+## Black Hole Search
+
+The repository also includes a small black-hole search utility built on a local snapshot from the NASA HEASARC INTEGRAL source catalog.
+
+### 1. Fetch the black-hole candidate snapshot
+
+```bash
+bash scripts/fetch_nasa_black_hole_data.sh
+```
+
+This downloads a filtered HEASARC catalog containing:
+
+- sources labeled `BHC`
+- microquasar-tagged sources
+- the Galactic-center `Sgr A*` entry present in the catalog
+
+### 2. Search by name
+
+```bash
+python3 src/nasa_black_hole_search.py --name "Sgr A"
+python3 src/nasa_black_hole_search.py --name "IGR"
+python3 src/nasa_black_hole_search.py --source-type "BHC"
+```
+
+### 3. Search by sky position
+
+```bash
+python3 src/nasa_black_hole_search.py --ra 266.42 --dec -29.01 --radius-arcmin 30
+python3 src/nasa_black_hole_search.py --ra "17 45 40" --dec "-29 00 00" --radius-arcmin 30
+```
+
+### 4. Output as JSON or CSV
+
+```bash
+python3 src/nasa_black_hole_search.py --source-type "BHC" --format json
+python3 src/nasa_black_hole_search.py --name "XTE" --format csv
+```
+
+Scope note:
+
+- this is a practical search tool over a HEASARC high-energy source snapshot
+- it is not a complete census of all black holes in the universe
+- it is most useful for quickly locating black-hole candidates and related compact high-energy systems from the selected catalog
 
 ## Command-line Options
 
@@ -340,6 +386,7 @@ Basic local validation:
 
 ```bash
 python3 -m py_compile src/nasa_exoplanet_research.py
+python3 -m py_compile src/nasa_black_hole_search.py
 pytest -q
 ```
 
