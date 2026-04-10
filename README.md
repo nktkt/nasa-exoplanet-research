@@ -172,6 +172,12 @@ The code is intentionally lightweight. It uses:
 
 The repository does not currently pin a full environment file. If you want a minimal setup, install the packages above in any standard Python environment.
 
+For this repository, a simple dependency file is included:
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Quick Start
 
 ### 1. Clone the repository
@@ -327,6 +333,17 @@ Natural extensions for this repository include:
 - adding host-age or stellar-type splits
 - generating JWST or RV follow-up specific rankings
 - exporting publication-ready tables
+
+## Development
+
+Basic local validation:
+
+```bash
+python3 -m py_compile src/nasa_exoplanet_research.py
+pytest -q
+```
+
+Continuous integration is configured in `.github/workflows/ci.yml` and runs on every push and pull request.
 
 ## Citation
 
